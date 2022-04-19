@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.practica.ejemplodagger.data.entities.UserEntity
 import com.practica.ejemplodagger.databinding.ActivityMainBinding
 import com.practica.ejemplodagger.sis.util.adapter.UserAdapter
-import com.practica.ejemplodagger.sis.view.DeleteAlertDialog
 import com.practica.ejemplodagger.sis.view.PurchaseConfirmationDialogFragment
 import com.practica.ejemplodagger.sis.viewmodel.MainViewModel
 
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         users= emptyList<UserEntity>().toMutableList()
         initRecyclerview()
         mainViewModel.getAllUsers()
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             adapter.setUserLists(users)
         })
 
-        binding.showBtn.setOnClickListener{show()}
+        binding.addBtn.setOnClickListener{addNewUser()}
     }
 
     fun initRecyclerview(){
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**show the add new user window*/
-    private fun show(){
+    private fun addNewUser(){
         val alert = PurchaseConfirmationDialogFragment{  user-> mainViewModel.addUser(user) }
         alert.show(supportFragmentManager, PurchaseConfirmationDialogFragment.TAG)
     }
@@ -55,21 +55,8 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = adapter.getPosition()
         val user = users[position]
-
-        return when (item.title) {
-            "Ver imagen" -> {
-                true
-            }
-            "Eliminar" -> {
-                val alert = DeleteAlertDialog(user){ user -> mainViewModel.deleteUser(user) }
-                alert.show(supportFragmentManager, DeleteAlertDialog.TAG)
-                true
-            }
-            "Editar" -> {
-                true
-            }
-            else -> false
-        }
+        mainViewModel.itemSelect(item,user,supportFragmentManager)
+        return true
     }
 
 }

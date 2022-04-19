@@ -1,14 +1,12 @@
 package com.practica.ejemplodagger.sis.util.adapter
 
 import android.annotation.SuppressLint
-import android.view.ContextMenu
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.UserEntity
+import java.util.zip.Inflater
 
 class UserAdapter :
     RecyclerView.Adapter<UserAdapter.ViewHolder>(), View.OnCreateContextMenuListener {
@@ -74,3 +72,5 @@ class UserAdapter :
         menu.add(0, view.id, 0, "Editar")
     }
 }
+
+

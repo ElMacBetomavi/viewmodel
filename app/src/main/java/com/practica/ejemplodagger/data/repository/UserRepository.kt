@@ -1,13 +1,13 @@
-package com.practica.ejemplodagger.data.Repository
+package com.practica.ejemplodagger.data.repository
 
 import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.data.entities.UserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class UserReposiory() {
+class UserRepository {
 
-    val db = MainApplication.database.userDao()
+    private val db = MainApplication.database.userDao()
 
     suspend fun getAllUsers(): List<UserEntity> =
         withContext(Dispatchers.IO) {
