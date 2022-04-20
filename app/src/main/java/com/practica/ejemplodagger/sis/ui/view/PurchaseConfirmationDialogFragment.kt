@@ -1,4 +1,4 @@
-package com.practica.ejemplodagger.sis.view
+package com.practica.ejemplodagger.sis.ui.view
 
 import android.app.AlertDialog
 import android.app.Dialog

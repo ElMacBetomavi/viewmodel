@@ -8,11 +8,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practica.ejemplodagger.data.entities.UserEntity
 import com.practica.ejemplodagger.databinding.ActivityMainBinding
-import com.practica.ejemplodagger.sis.util.adapter.UserAdapter
-import com.practica.ejemplodagger.sis.view.PurchaseConfirmationDialogFragment
+import com.practica.ejemplodagger.sis.ui.adapter.UserAdapter
+import com.practica.ejemplodagger.sis.ui.view.PurchaseConfirmationDialogFragment
 import com.practica.ejemplodagger.sis.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
+
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter:UserAdapter
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        users= emptyList<UserEntity>().toMutableList()
         initRecyclerview()
         mainViewModel.getAllUsers()
 
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initRecyclerview(){
+        users= emptyList<UserEntity>().toMutableList()
         adapter = UserAdapter()
         adapter.setUserLists(users)
         binding.rvUsers.layoutManager = LinearLayoutManager(this)

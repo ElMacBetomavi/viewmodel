@@ -1,4 +1,4 @@
-package com.practica.ejemplodagger.sis.util.adapter
+package com.practica.ejemplodagger.sis.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.*
@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.UserEntity
-import java.util.zip.Inflater
 
 class UserAdapter :
     RecyclerView.Adapter<UserAdapter.ViewHolder>(), View.OnCreateContextMenuListener {

@@ -7,6 +7,7 @@ import com.practica.ejemplodagger.data.db.UsersDatabase
 import com.practica.ejemplodagger.sis.di.component.DaggerUtilComponent
 import com.practica.ejemplodagger.sis.di.component.UtilComponent
 import com.practica.ejemplodagger.sis.di.module.ContextModule
+import javax.inject.Inject
 
 
 class MainApplication : Application() {
