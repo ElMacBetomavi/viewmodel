@@ -66,15 +66,15 @@ class RegisterCategoriyFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initcategoria = CategoriaEntity(0,"","")
         if (id!=0){
             registerCategoryViewModel.setInitCategoryValues(id!!)
         }
-        registerCategoryViewModel.errorMessageCategoria.observe(viewLifecycleOwner, androidx.lifecycle.Observer { errormessage->
+        registerCategoryViewModel.errorMessageCategoria.observe(viewLifecycleOwner, Observer { errormessage->
             setErrorMessage(errormessage)
         })
 
-        registerCategoryViewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        registerCategoryViewModel.message.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context,it, Toast.LENGTH_LONG).show()
         })
 
