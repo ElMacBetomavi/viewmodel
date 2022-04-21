@@ -10,8 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.data.repository.UserRepository
 import com.practica.ejemplodagger.data.entities.UserEntity
-import com.practica.ejemplodagger.sis.di.component.UtilComponent
-import com.practica.ejemplodagger.sis.ui.view.DeleteAlertDialog
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,8 +50,8 @@ class MainViewModel @Inject constructor() :ViewModel() {
             "Ver imagen" -> {
             }
             "Eliminar" -> {
-                val alert = DeleteAlertDialog(user){ deleteUser -> deleteUser(deleteUser) }
-                alert.show(fragmentManager, DeleteAlertDialog.TAG)
+                //val alert = DeleteAlertDialog(user){ deleteUser -> deleteUser(deleteUser) }
+                //alert.show(fragmentManager, DeleteAlertDialog.TAG)
             }
             "Editar" -> {
                 viewMessage()

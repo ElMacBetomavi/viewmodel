@@ -4,12 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/drawable/bg_menu.xml" value="0.1435" />
-        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.1425" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/contex_menu_layout.xml" value="0.5" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/cutom_alert_dialog.xml" value="0.25" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/fragment_categoria.xml" value="0.15217391304347827" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/fragment_register_categoriy.xml" value="0.2" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/image_view_alert_dialog.xml" value="0.13405797101449277" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/list_item_categoria.xml" value="0.184375" />
         <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/layout/user_list_item.xml" value="0.184375" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/menu/top_app_bar.xml" value="0.184375" />
+        <entry key="..\:/Users/humacias/Desktop/course/kotlin/ejemploDagger/app/src/main/res/xml/file_paths.xml" value="0.13722826086956522" />
       </map>
     </option>
   </component>
