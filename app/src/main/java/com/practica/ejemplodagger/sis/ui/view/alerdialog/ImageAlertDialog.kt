@@ -26,10 +26,11 @@ class ImageAlertDialog(
                 view.dismiss()
             }
             .create()
+
         return dialog
     }
 
     companion object {
-        const val TAG = "PurchaseConfirmationDialog"
+        const val TAG = "ImageAlertDialog"
     }
 }

@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.CategoriaEntity
@@ -52,6 +53,7 @@ class RegisterCategoriyFragment : Fragment() {
             categoria = it.getString(ARG_PARAM2,"")
         }
         activity?.findViewById<FloatingActionButton>(R.id.add_categoria)!!.visibility = View.GONE
+        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)!!.visibility = View.GONE
     }
 
     override fun onCreateView(
@@ -126,6 +128,8 @@ class RegisterCategoriyFragment : Fragment() {
         binding.categoriaRegisterField.setText(initCategory.name)
         binding.descripcionCategoriaField.setText(initCategory.description)
         binding.categoriaRegisterField.isFocusable = false
+        binding.saveCategoriaBtn.text = "editar"
+        binding.title.text = "Editar"
         val file = File(initCategory.image!!)
         if(file.exists()){
             val bitmap = BitmapFactory.decodeFile(initCategory.image)

@@ -22,4 +22,14 @@
         android:text="sin categorias registradas"
         android:gravity="center" />
 
+    <Button
+        android:id="@+id/registrar_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="registro"
+        android:layout_marginLeft="15sp"
+        android:layout_marginBottom="15sp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

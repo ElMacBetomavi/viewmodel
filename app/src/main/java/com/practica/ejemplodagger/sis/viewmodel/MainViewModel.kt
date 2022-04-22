@@ -33,31 +33,8 @@ class MainViewModel @Inject constructor() :ViewModel() {
         }
     }
 
-    fun deleteUser(user:UserEntity){
-        viewModelScope.launch {
-            repository.delete(user)
-            getAllUsers()
-        }
-    }
 
-    fun viewMessage(){
-        Toast.makeText(context,"funciona",Toast.LENGTH_LONG).show()
-    }
 
-    /**atiende la seleccion del context menu de cada item del rv*/
-    fun itemSelect(item:MenuItem, user:UserEntity, fragmentManager: FragmentManager){
-         when (item.title) {
-            "Ver imagen" -> {
-            }
-            "Eliminar" -> {
-                //val alert = DeleteAlertDialog(user){ deleteUser -> deleteUser(deleteUser) }
-                //alert.show(fragmentManager, DeleteAlertDialog.TAG)
-            }
-            "Editar" -> {
-                viewMessage()
-            }
-            else -> viewMessage()
-        }
-    }
+
 
 }

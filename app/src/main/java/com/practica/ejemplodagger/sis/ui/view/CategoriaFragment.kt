@@ -10,10 +10,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.CategoriaEntity
 import com.practica.ejemplodagger.databinding.FragmentCategoriaBinding
+import com.practica.ejemplodagger.ejemplo.Casa
+import com.practica.ejemplodagger.ejemplo.DaggerCasaComponent
 import com.practica.ejemplodagger.sis.ui.adapter.CategoriaListAdapter
 import com.practica.ejemplodagger.sis.viewmodel.CategoriaViewModel
 
@@ -47,14 +51,15 @@ class CategoriaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        //carga los valores de la lista de categoria
         categoriaViewModel.getAllCategorias()
-
+        //cambia los valores de alista cando se actualiza
         categoriaViewModel.cateogriaList.observe(viewLifecycleOwner, Observer { currentCategoriaList ->
             setCategoryList(currentCategoriaList)
         })
-
+        //cambia de a fragmento de agregar categoria
         addBtn.setOnClickListener{ addCategory() }
-
+        //atiende el search view encargado de filtrar la lista de categorias
         search.setOnQueryTextListener(object :
         SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -67,7 +72,18 @@ class CategoriaFragment : Fragment() {
                 return true
             }
         })
+        binding.registrarBtn.setOnClickListener{ registreFragment()}
 
+    }
+
+    fun registreFragment(){
+        val transition = parentFragmentManager
+        val fragmentTransition = transition.beginTransaction()
+        fragmentTransition.setCustomAnimations(R.anim.enter_from_left,R.anim.out_from_left,
+            R.anim.enter_from_right, R.anim.out_from_right)
+        fragmentTransition.replace(R.id.fragment_container, RegisterDatePickerFragment(), "register_categoria")
+        fragmentTransition.addToBackStack(null)
+        fragmentTransition.commit()
     }
 
     fun initRecyclerView(){
@@ -91,6 +107,8 @@ class CategoriaFragment : Fragment() {
     private fun addCategory(){
         val transition = parentFragmentManager
         val fragmentTransition = transition.beginTransaction()
+        fragmentTransition.setCustomAnimations(R.anim.fade_in,R.anim.fade_out,
+                                                R.anim.fade_in, R.anim.fade_out)
         fragmentTransition.replace(R.id.fragment_container, RegisterCategoriyFragment(), "register_categoria")
         fragmentTransition.addToBackStack(null)
         fragmentTransition.commit()
@@ -107,6 +125,7 @@ class CategoriaFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         activity?.findViewById<FloatingActionButton>(R.id.add_categoria)!!.visibility = View.VISIBLE
+        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)!!.visibility = View.VISIBLE
     }
 
 }
