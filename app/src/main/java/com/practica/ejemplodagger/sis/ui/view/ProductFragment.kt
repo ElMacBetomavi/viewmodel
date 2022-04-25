@@ -58,6 +58,20 @@ class ProductFragment : Fragment() {
 
         productViewModel.getAllProducts()
         addBtn.setOnClickListener{ addCategory() }
+
+        search.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                productViewModel.searchCategories(query!!)
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query=="")productViewModel.getAllProducts()
+                return true
+            }
+        }
+        )
     }
 
     /**show the add new user window*/

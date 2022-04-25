@@ -36,6 +36,13 @@ class ProductViewModel:ViewModel() {
         }
     }
 
+    fun searchCategories(query:String){
+        viewModelScope.launch {
+            val curentCategoriaList = repository.search(query)
+            productList.postValue(curentCategoriaList)
+        }
+    }
+
     /**atiende la seleccion del context menu de cada item del rv*/
     fun itemSelect(item: MenuItem, product: ProductosEntity, fragmentManager: FragmentManager){
         when (item.title) {
