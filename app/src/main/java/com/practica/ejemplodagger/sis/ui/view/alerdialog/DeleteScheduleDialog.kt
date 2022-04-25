@@ -5,22 +5,21 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
-import com.practica.ejemplodagger.data.entities.CategoriaEntity
+import com.practica.ejemplodagger.data.entities.ScheduleEntity
 
-
-class DeleteAlertDialog(
-    private val category:CategoriaEntity,
-    private val updateList: (category: CategoriaEntity) -> Unit
+class DeleteScheduleDialog(
+    private val schedule : ScheduleEntity,
+    private val updateList: (schedule: ScheduleEntity) -> Unit
 ) : DialogFragment()  {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("Esta seguro de eliminar la categoria  ${category.name}?")
+            .setMessage("Esta seguro de eliminar la cita ?")
             .setView(view)
             .setPositiveButton("si") { _, _ ->
-                updateList(category)
+                updateList(schedule)
+                Toast.makeText(context, "cita eliminada", Toast.LENGTH_LONG).show()
             }
             .setNegativeButton("no"){ view, _ ->
                 view.dismiss()

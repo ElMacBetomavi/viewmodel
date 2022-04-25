@@ -2,11 +2,13 @@ package com.practica.ejemplodagger
 
 import android.app.Application
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import androidx.room.Room
 import com.practica.ejemplodagger.data.db.UsersDatabase
 import com.practica.ejemplodagger.sis.di.component.DaggerUtilComponent
 import com.practica.ejemplodagger.sis.di.component.UtilComponent
 import com.practica.ejemplodagger.sis.di.module.ContextModule
+import com.practica.ejemplodagger.sis.di.module.UtilModule
 import javax.inject.Inject
 
 
@@ -25,6 +27,7 @@ class MainApplication : Application() {
             "productos-db")
             //.allowMainThreadQueries()
             .build()
+
     }
 
     companion object {

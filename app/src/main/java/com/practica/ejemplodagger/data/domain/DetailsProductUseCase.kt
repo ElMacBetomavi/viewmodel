@@ -10,12 +10,11 @@ import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageAlertDialog
 import java.io.File
 
-class DetailsCategoryUseCase {
-
+class DetailsProductUseCase {
     val context = MainApplication.appContext
     /**ver detalles muestra un alert dialog con la imagen de la categoria
      * si esque existe, caso contrario muestra un mensaje*/
-    fun verDetalles(image: String, fragmentManager: FragmentManager, context:Context){
+    fun verDetalles(image: String, fragmentManager: FragmentManager, context: Context){
         val file = File(image)
         var bitmap: Bitmap? = null
         if (file.exists()){
@@ -33,6 +32,4 @@ class DetailsCategoryUseCase {
             }
         }
     }
-
-
 }

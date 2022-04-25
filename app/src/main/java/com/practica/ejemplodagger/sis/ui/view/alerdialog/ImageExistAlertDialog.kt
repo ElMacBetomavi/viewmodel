@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 
 class ImageExistAlertDialog(
-    private val updateImage: () -> Unit)
+    val updateImage: () -> Unit)
     : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -14,7 +14,7 @@ class ImageExistAlertDialog(
         val dialog = AlertDialog.Builder(requireContext())
             .setMessage("existe una imagen seleccionada, desea reemplazarla?")
             .setPositiveButton("si") { _, _ ->
-                updateImage
+                updateImage()
             }
             .setNegativeButton("no"){ view, _ ->
                 view.dismiss()

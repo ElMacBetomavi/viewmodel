@@ -1,23 +1,25 @@
 package com.practica.ejemplodagger.sis.ui.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.MaterialToolbar
@@ -26,6 +28,7 @@ import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.CategoriaEntity
 import com.practica.ejemplodagger.databinding.FragmentRegisterCategoriyBinding
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
+import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
 import com.practica.ejemplodagger.sis.util.CategoriaErrorMessage
 import com.practica.ejemplodagger.sis.viewmodel.RegisterCategoryViewModel
 import java.io.File
@@ -35,6 +38,7 @@ import java.util.*
 private const val ARG_PARAM1 = "id"
 private const val ARG_PARAM2 = "product_id"
 
+@Suppress("DEPRECATION")
 class RegisterCategoriyFragment : Fragment() {
 
     private var _binding: FragmentRegisterCategoriyBinding? = null
@@ -68,16 +72,19 @@ class RegisterCategoriyFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initcategoria = CategoriaEntity(0,"","")
+
         if (id!=0){
             registerCategoryViewModel.setInitCategoryValues(id!!)
         }
+
         registerCategoryViewModel.errorMessageCategoria.observe(viewLifecycleOwner, Observer { errormessage->
             setErrorMessage(errormessage)
         })
 
-        registerCategoryViewModel.message.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context,it, Toast.LENGTH_LONG).show()
+        registerCategoryViewModel.message.observe(viewLifecycleOwner, Observer { currentMessage->
+            Toast.makeText(context,currentMessage, Toast.LENGTH_LONG).show()
         })
 
         registerCategoryViewModel.changeFragment.observe(viewLifecycleOwner, Observer {
@@ -130,28 +137,66 @@ class RegisterCategoriyFragment : Fragment() {
         binding.categoriaRegisterField.isFocusable = false
         binding.saveCategoriaBtn.text = "editar"
         binding.title.text = "Editar"
+        //
         val file = File(initCategory.image!!)
         if(file.exists()){
-            val bitmap = BitmapFactory.decodeFile(initCategory.image)
-            PhotoPath = initCategory.image!!
+            println("imagen path "+initCategory.image)
+            val bitmap: Bitmap = BitmapFactory.decodeFile(initCategory.image)
             binding.imageField.setImageBitmap(bitmap)
+        }else {
+//            val uri = initCategory.image!!.toUri()
+//            println("uri $uri")
+//            binding.imageField.setImageURI(uri)
+//            val sourceFile = DocumentFile.fromSingleUri(requireContext(), uri)
+//
+//            if (sourceFile!!.exists()) {
+//                println("imagen uri "+initCategory.image)
+//                binding.imageField.setImageURI(uri)
+//            }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun selectImage(){
-        val file = File(PhotoPath!!)
-        if(file.exists()){
-            val alert = ImageExistAlertDialog(){ dispatchTakePictureIntent() }
-            alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
-        }else dispatchTakePictureIntent()
     }
 
     val REQUEST_IMAGE_CAPTURE = 1
     val PICK_IMAGE = 2
 
     @RequiresApi(Build.VERSION_CODES.N)
+    fun selectImage(){
+        val file = File(PhotoPath)
+        if(file.exists()){
+
+            val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
+            alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
+        }else {
+            val uri = PhotoPath.toUri()
+            val sourceFile = DocumentFile.fromSingleUri(requireContext(), uri)
+            if (sourceFile!!.exists()) {
+                //imageView.setImageURI(uri)
+                val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
+                alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
+            }else{
+                showSelectPicsourchalert()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun showSelectPicsourchalert(){
+        val alert = SelectSourcePicDialog({-> selectPictureGalery()},
+                                          {-> dispatchTakePictureIntent()})
+        alert.show(parentFragmentManager, "imagen")
+    }
+
+    fun selectPictureGalery(){
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+    }
+
+   // codigo para tomar foto con camara
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun dispatchTakePictureIntent() {
+       println("tomar foto 100+")
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             activity?.let {
@@ -202,32 +247,22 @@ class RegisterCategoriyFragment : Fragment() {
 
     /**atiende las acciones de los intent de seleccion de imagen de galeria
      * o tomar fotografia con la camara*/
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
-            val matrix = Matrix()
-            matrix.postRotate(90F)
-            var widthImg = 0.0
-            var hightImg = 0.0
-            if (bitmap.width > bitmap.height){
-                widthImg= bitmap.width*0.6
-                hightImg = bitmap.height*1.0
-            }else{
-                widthImg = bitmap.width*1.0
-                hightImg = bitmap.height*0.6
-                matrix.postRotate(-90F)
-            }
-            val rotateBitmap = Bitmap.createBitmap(bitmap,0,0,widthImg.toInt(),hightImg.toInt(), matrix,true)
-            val imageScaled = Bitmap.createScaledBitmap(rotateBitmap, 550, 400, false)
-            binding.imageField.setImageBitmap(imageScaled)
+            binding.imageField.setImageBitmap(bitmap)
         }
 
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK){
-            val imageUri : Uri? = data?.data
-            println("uri $imageUri")
-            PhotoPath = imageUri?.toString()!!
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
+            val imageUri : Uri? = data.data
+            PhotoPath = imageUri.toString()
             binding.imageField.setImageURI(imageUri)
         }
     }
+
+
+
 
 }

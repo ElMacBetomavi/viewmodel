@@ -6,21 +6,21 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.practica.ejemplodagger.data.entities.CategoriaEntity
+import com.practica.ejemplodagger.data.entities.ProductosEntity
 
-
-class DeleteAlertDialog(
-    private val category:CategoriaEntity,
-    private val updateList: (category: CategoriaEntity) -> Unit
+class DeleteProductDialog(
+    private val product: ProductosEntity,
+    private val updateList: (product: ProductosEntity) -> Unit
 ) : DialogFragment()  {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("Esta seguro de eliminar la categoria  ${category.name}?")
+            .setMessage("Esta seguro de eliminar el producto  ${product.nombre}?")
             .setView(view)
             .setPositiveButton("si") { _, _ ->
-                updateList(category)
+                updateList(product)
+                Toast.makeText(context, "producto eliminado ", Toast.LENGTH_LONG).show()
             }
             .setNegativeButton("no"){ view, _ ->
                 view.dismiss()

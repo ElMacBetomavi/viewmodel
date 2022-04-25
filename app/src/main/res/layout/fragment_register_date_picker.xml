@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:gravity="center">
         <TextView
+            android:id="@+id/label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -26,7 +27,6 @@
             android:clickable="false"
             android:focusable="false"
             android:hint="¿Cuándo quieres ir?"/>
-
         <EditText
             android:id="@+id/etHour"
             android:layout_width="match_parent"
@@ -35,7 +35,11 @@
             android:clickable="false"
             android:focusable="false"
             android:hint="¿Que hora quieres apartar cita?"/>
-
+        <Button
+            android:id="@+id/save_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="guardar"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -4,19 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".sis.ui.view.CategoriaFragment">
+    tools:context=".sis.ui.view.ProductFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_categorias"
+            android:id="@+id/rv_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
     <TextView
-        android:id="@+id/message_categoria"
+        android:id="@+id/message_producto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="sin categorias registradas"
