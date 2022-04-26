@@ -108,7 +108,6 @@ class RegistrarProductoFragment : Fragment() {
             selectImage()
         }
 
-
     }
 
     /**estable las opciones de los campos de opcion multiple del formulario*/
@@ -156,6 +155,7 @@ class RegistrarProductoFragment : Fragment() {
         )
     }
 
+    /** configura los valores iniciales cuando se selecciona la opcion de editar*/
     private fun setEditValue(initProducto: ProductosEntity){
         editFlag=true
         initProduct =initProducto

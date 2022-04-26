@@ -271,6 +271,4 @@ class RegisterCategoriyFragment : Fragment() {
     }
 
 
-
-
 }

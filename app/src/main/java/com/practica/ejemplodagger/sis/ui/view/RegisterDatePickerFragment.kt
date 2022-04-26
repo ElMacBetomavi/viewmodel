@@ -1,11 +1,18 @@
 package com.practica.ejemplodagger.sis.ui.view
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.MaterialToolbar
@@ -14,6 +21,7 @@ import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.CategoriaEntity
 import com.practica.ejemplodagger.data.entities.ScheduleEntity
 import com.practica.ejemplodagger.databinding.FragmentRegisterDatePickerBinding
+import com.practica.ejemplodagger.sis.util.notificaciones.Notifications
 import com.practica.ejemplodagger.sis.viewmodel.RegisterDatePickerViewModel
 
 private const val ARG_PARAM1 = "id"
@@ -47,6 +55,7 @@ class RegisterDatePickerFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,6 +100,8 @@ class RegisterDatePickerFragment : Fragment() {
             addSchedule()
         }
 
+
+
     }
 
     fun addSchedule(){
@@ -120,5 +131,7 @@ class RegisterDatePickerFragment : Fragment() {
         binding.saveDateBtn.text = "editar"
         binding.label.text = "Editar"
     }
+
+
 
 }

@@ -1,11 +1,13 @@
 package com.practica.ejemplodagger.sis.ui.view
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,7 @@ import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.ScheduleEntity
 import com.practica.ejemplodagger.databinding.FragmentScheduleBinding
 import com.practica.ejemplodagger.sis.ui.adapter.ScheduleListAdapter
+import com.practica.ejemplodagger.sis.util.notificaciones.Notifications
 import com.practica.ejemplodagger.sis.viewmodel.ScheduleViewModel
 
 class ScheduleFragment : Fragment() {
@@ -40,6 +43,7 @@ class ScheduleFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,6 +57,8 @@ class ScheduleFragment : Fragment() {
         })
 
         addBtn.setOnClickListener{ addCategory() }
+
+        createNotificaction()
     }
 
     private fun initRecyclerView(){
@@ -77,6 +83,13 @@ class ScheduleFragment : Fragment() {
         val schedule = scheduleList[position]
         scheduleViewModel.itemSelect(item,schedule,parentFragmentManager)
         return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun createNotificaction(){
+        val notification = Notifications()
+        notification.createNotificationChannel()
+        notification.createExplicitIntentForActivity()
     }
 
     override fun onResume() {
