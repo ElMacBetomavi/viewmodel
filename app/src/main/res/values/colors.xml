@@ -11,4 +11,6 @@
 
     <color name="background_product_item">#F1F1F1</color>
     <color name="myblue">#0F12AA</color>
+    <color name="darck_grey">#3C3C3C</color>
+    <color name="medium_grey">#292929</color>
 </resources>

@@ -82,7 +82,7 @@ class ProductListAdapter() :
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         menu!!.setHeaderTitle(null);
-        menu.add(0, view!!.getId(), 0, "Ver detalles");//groupId, itemId, order, title
+        menu.add(0, view!!.getId(), 0, "Ver imagen");//groupId, itemId, order, title
         menu.add(0, view.getId(), 0, "Eliminar")
         menu.add(0, view.getId(), 0, "Editar");
     }

@@ -1,12 +1,26 @@
 package com.practica.ejemplodagger.sis.ui.view
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.MaterialToolbar
@@ -14,8 +28,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.entities.ProductosEntity
 import com.practica.ejemplodagger.databinding.FragmentRegistrarProductoBinding
+import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
+import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
+import com.practica.ejemplodagger.sis.util.URIPathHelper
 import com.practica.ejemplodagger.sis.viewmodel.RegisterProductViewModel
 import com.practica.ventasmoviles.sys.viewModel.productos.ErrorMessage
+import java.io.File
+import java.io.IOException
+import java.util.*
 
 
 private const val ARG_PARAM1 = "id"
@@ -49,6 +69,7 @@ class RegistrarProductoFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -81,6 +102,10 @@ class RegistrarProductoFragment : Fragment() {
             producto.id = initProduct.id
             producto.imagen = PhotoPath
             registerProductViewModel.validateCategoria(producto, editFlag)
+        }
+
+        binding.imageField.setOnClickListener{
+            selectImage()
         }
 
 
@@ -134,6 +159,7 @@ class RegistrarProductoFragment : Fragment() {
     private fun setEditValue(initProducto: ProductosEntity){
         editFlag=true
         initProduct =initProducto
+        PhotoPath = initProduct.imagen!!
         binding.categoriaValue.setText(initProduct.categoria)
         binding.unidadMedidaValue.setText(initProduct.unidadMedida)
         binding.saveBtn.text = "editar"
@@ -144,6 +170,125 @@ class RegistrarProductoFragment : Fragment() {
         binding.marcaField.setText(initProduct.marca)
         binding.colorField.setText(initProduct.color)
         binding.cantidadMinField.setText(initProduct.cantidadMin.toString())
+
+        val file = File(initProduct.imagen!!)
+        if(file.exists()){
+            val bitmap: Bitmap = BitmapFactory.decodeFile(initProduct.imagen)
+            val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
+            binding.imageField.setImageBitmap(imageScaled)
+        }
+    }
+
+    val REQUEST_IMAGE_CAPTURE = 1
+    val PICK_IMAGE = 2
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun selectImage(){
+        val file = File(PhotoPath)
+        if(file.exists()){
+            val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
+            alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
+        }else {
+            val uri = PhotoPath.toUri()
+            val sourceFile = DocumentFile.fromSingleUri(requireContext(), uri)
+            if (sourceFile!!.exists()) {
+                //imageView.setImageURI(uri)
+                val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
+                alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
+            }else{
+                showSelectPicsourchalert()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun showSelectPicsourchalert(){
+        val alert = SelectSourcePicDialog({-> selectPictureGalery()},
+            {-> dispatchTakePictureIntent()})
+        alert.show(parentFragmentManager, "imagen")
+    }
+
+    fun selectPictureGalery(){
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        this.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+    }
+
+    // codigo para tomar foto con camara
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun dispatchTakePictureIntent() {
+        println("tomar foto 100+")
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            activity?.let {
+                takePictureIntent.resolveActivity(it.packageManager)?.also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri? = context?.let { it1 ->
+                            FileProvider.getUriForFile(
+                                it1,
+                                "com.practica.ejemplodagger.android.fileprovider",
+                                it
+                            )
+                        }
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                }
+            }
+        }
+    }
+
+    /**crea la ruta de la imagen tomada en la intent de la camara*/
+    @RequiresApi(Build.VERSION_CODES.N)
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val picture = File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            if (absolutePath != null){
+                PhotoPath = absolutePath
+            }
+        }
+        return picture
+    }
+
+    /**atiende las acciones de los intent de seleccion de imagen de galeria
+     * o tomar fotografia con la camara*/
+    @SuppressLint("UseRequireInsteadOfGet")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
+            val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
+            binding.imageField.setImageBitmap(imageScaled)
+        }
+
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
+            val imageUri : Uri? = data.data
+            //PhotoPath = imageUri.toString()
+            //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
+            val uriPathHelper = URIPathHelper()
+            val realpath = uriPathHelper.getPath(context!!, imageUri!!)
+
+            println("path $realpath")
+            binding.imageField.setImageURI(imageUri)
+
+        }
     }
 
 }

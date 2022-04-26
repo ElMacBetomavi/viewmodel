@@ -2,6 +2,7 @@ package com.practica.ejemplodagger.sis.viewmodel
 
 import android.annotation.SuppressLint
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,6 +48,7 @@ class ProductViewModel:ViewModel() {
     fun itemSelect(item: MenuItem, product: ProductosEntity, fragmentManager: FragmentManager){
         when (item.title) {
             "Ver imagen" -> {
+
                 val detailsProduct= DetailsProductUseCase()
                 detailsProduct.verDetalles(product.imagen!!, fragmentManager, context!!)
             }

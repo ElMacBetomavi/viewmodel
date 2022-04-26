@@ -3,6 +3,7 @@ package com.practica.ejemplodagger.sis.ui.view.alerdialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
@@ -19,7 +20,9 @@ class ImageAlertDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{
         val myView = layoutInflater.inflate(R.layout.image_view_alert_dialog,null)
         val image = myView.findViewById<ImageView>(R.id.image_view)
-        image.setImageBitmap(bitmap)
+
+        val imageScaled = Bitmap.createScaledBitmap(bitmap!!, 700, 1000, false)
+        image.setImageBitmap(imageScaled)
         val dialog = AlertDialog.Builder(requireContext())
             .setView(myView)
             .setPositiveButton("ok") { view, _ ->

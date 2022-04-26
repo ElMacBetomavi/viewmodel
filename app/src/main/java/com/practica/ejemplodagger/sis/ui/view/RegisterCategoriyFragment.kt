@@ -30,6 +30,7 @@ import com.practica.ejemplodagger.databinding.FragmentRegisterCategoriyBinding
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
 import com.practica.ejemplodagger.sis.util.CategoriaErrorMessage
+import com.practica.ejemplodagger.sis.util.URIPathHelper
 import com.practica.ejemplodagger.sis.viewmodel.RegisterCategoryViewModel
 import java.io.File
 import java.io.IOException
@@ -131,6 +132,7 @@ class RegisterCategoriyFragment : Fragment() {
     /**si se selecciono editar,carga los valores previos a editar en el formulario*/
     private fun setEditValue(initCategory:CategoriaEntity){
         editFlag=true
+        PhotoPath = initCategory.image!!
         initcategoria =initCategory
         binding.categoriaRegisterField.setText(initCategory.name)
         binding.descripcionCategoriaField.setText(initCategory.description)
@@ -140,9 +142,9 @@ class RegisterCategoriyFragment : Fragment() {
         //
         val file = File(initCategory.image!!)
         if(file.exists()){
-            println("imagen path "+initCategory.image)
             val bitmap: Bitmap = BitmapFactory.decodeFile(initCategory.image)
-            binding.imageField.setImageBitmap(bitmap)
+            val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
+            binding.imageField.setImageBitmap(imageScaled)
         }else {
 //            val uri = initCategory.image!!.toUri()
 //            println("uri $uri")
@@ -163,7 +165,6 @@ class RegisterCategoriyFragment : Fragment() {
     fun selectImage(){
         val file = File(PhotoPath)
         if(file.exists()){
-
             val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
             alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
         }else {
@@ -252,13 +253,20 @@ class RegisterCategoriyFragment : Fragment() {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
-            binding.imageField.setImageBitmap(bitmap)
+            val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
+            binding.imageField.setImageBitmap(imageScaled)
         }
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             val imageUri : Uri? = data.data
-            PhotoPath = imageUri.toString()
+            //PhotoPath = imageUri.toString()
+            //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
+            val uriPathHelper = URIPathHelper()
+            val realpath = uriPathHelper.getPath(context!!, imageUri!!)
+
+            println("path $realpath")
             binding.imageField.setImageURI(imageUri)
+
         }
     }
 

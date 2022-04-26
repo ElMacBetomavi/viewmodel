@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="10sp"
-    android:layout_marginHorizontal="5sp">
+    android:layout_marginHorizontal="5sp"
+    app:cardBackgroundColor="@color/darck_grey">
 
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="16sp">
+    android:layout_margin="16sp"
+   >
 
     <TextView
         android:id="@+id/categoria_item"

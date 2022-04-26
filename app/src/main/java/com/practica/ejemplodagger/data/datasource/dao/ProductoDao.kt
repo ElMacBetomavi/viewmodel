@@ -20,7 +20,7 @@ interface ProductoDao {
     @Update
     suspend fun updateCategoria(producto: ProductosEntity): Int
 
-    @Query("SELECT * FROM productos_entity WHERE categoria like :value OR nombre like :value")
+    @Query("SELECT * FROM productos_entity WHERE categoria like :value OR nombre like :value ORDER BY nombre COLLATE NOCASE ASC")
     suspend fun search(value: String?):  MutableList<ProductosEntity>?
 
 }
