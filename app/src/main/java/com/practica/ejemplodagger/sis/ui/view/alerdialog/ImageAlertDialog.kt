@@ -20,7 +20,6 @@ class ImageAlertDialog(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{
         val myView = layoutInflater.inflate(R.layout.image_view_alert_dialog,null)
         val image = myView.findViewById<ImageView>(R.id.image_view)
-
         val imageScaled = Bitmap.createScaledBitmap(bitmap!!, 700, 1000, false)
         image.setImageBitmap(imageScaled)
         val dialog = AlertDialog.Builder(requireContext())

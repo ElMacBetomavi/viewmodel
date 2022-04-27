@@ -13,10 +13,7 @@ import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.R
 import com.practica.ejemplodagger.data.repository.UserRepository
 import com.practica.ejemplodagger.data.entities.UserEntity
-import com.practica.ejemplodagger.sis.ui.view.CategoriaFragment
-import com.practica.ejemplodagger.sis.ui.view.ProductFragment
-import com.practica.ejemplodagger.sis.ui.view.RegisterDatePickerFragment
-import com.practica.ejemplodagger.sis.ui.view.ScheduleFragment
+import com.practica.ejemplodagger.sis.ui.view.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +33,7 @@ class MainViewModel @Inject constructor() :ViewModel() {
                 R.id.compras ->
                     fragment.postValue(ScheduleFragment())
                 R.id.ventas ->
-                    Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                    fragment.postValue(UserFragment())
                 R.id.mis_clientes ->
                     Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                 R.id.inventario ->

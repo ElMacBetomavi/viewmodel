@@ -45,6 +45,7 @@ class RegisterCategoryViewModel:ViewModel() {
                         message.postValue("Categoria agregada")
                         changeFragment.postValue(true)
                     }else{
+                        println("imagen ${categoria.image}")
                         message.postValue("la categoria ya fue previamente registrada y no puede duplicarse")
                     }
                 }else{

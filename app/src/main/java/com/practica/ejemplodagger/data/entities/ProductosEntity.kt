@@ -7,13 +7,13 @@ import androidx.room.PrimaryKey
 data class ProductosEntity(
     @PrimaryKey(autoGenerate = true)
     var id:Int,
-    var imagen:String?="",
-    val nombre:String?="",
-    val costo:Float?=0f,
-    val precioMenudeo:Float?=0f,
-    val precioMayoreo:Float?=0f,
-    val categoria:String?="",
-    val marca:String?="",
-    val color:String?="",
-    val unidadMedida:String?="",
-    val cantidadMin:Int?=0)
+    var nombre:String?="",
+    var costo:Float?=0f,
+    var precioMenudeo:Float?=0f,
+    var precioMayoreo:Float?=0f,
+    var categoria:String?="",
+    var marca:String?="",
+    var color:String?="",
+    var unidadMedida:String?="",
+    var cantidadMin:Int?=0,
+    var imagen:String?="")

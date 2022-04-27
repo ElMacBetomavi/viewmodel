@@ -50,6 +50,7 @@ class RegisterCategoriyFragment : Fragment() {
     var PhotoPath=""
     var editFlag = false
     private lateinit var initcategoria:CategoriaEntity
+    var newCategory = CategoriaEntity(0,"","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +100,6 @@ class RegisterCategoriyFragment : Fragment() {
         binding.saveCategoriaBtn.setOnClickListener{
             val categoria: CategoriaEntity = getCategoria()
             categoria.id = initcategoria.id
-            categoria.image = PhotoPath
             registerCategoryViewModel.validateCategoria(categoria, editFlag)
         }
 
@@ -115,11 +115,9 @@ class RegisterCategoriyFragment : Fragment() {
     }
 
     private fun getCategoria():CategoriaEntity{
-        return CategoriaEntity(0,
-            binding.categoriaRegisterField.text.toString(),
-            binding.descripcionCategoriaField.text.toString(),
-            PhotoPath
-        )
+        newCategory.name = binding.categoriaRegisterField.text.toString()
+        newCategory.description = binding.descripcionCategoriaField.text.toString()
+        return newCategory
     }
 
     private fun changeFragment(){
@@ -133,6 +131,7 @@ class RegisterCategoriyFragment : Fragment() {
     private fun setEditValue(initCategory:CategoriaEntity){
         editFlag=true
         PhotoPath = initCategory.image!!
+
         initcategoria =initCategory
         binding.categoriaRegisterField.setText(initCategory.name)
         binding.descripcionCategoriaField.setText(initCategory.description)
@@ -142,6 +141,7 @@ class RegisterCategoriyFragment : Fragment() {
         //
         val file = File(initCategory.image!!)
         if(file.exists()){
+            newCategory.image = PhotoPath
             val bitmap: Bitmap = BitmapFactory.decodeFile(initCategory.image)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
             binding.imageField.setImageBitmap(imageScaled)
@@ -255,6 +255,7 @@ class RegisterCategoriyFragment : Fragment() {
             val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
             binding.imageField.setImageBitmap(imageScaled)
+            newCategory.image = PhotoPath
         }
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){

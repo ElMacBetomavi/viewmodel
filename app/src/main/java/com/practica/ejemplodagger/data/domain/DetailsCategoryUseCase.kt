@@ -18,10 +18,11 @@ class DetailsCategoryUseCase {
     fun verDetalles(image: String, fragmentManager: FragmentManager, context:Context){
         val file = File(image)
         var bitmap: Bitmap? = null
+
         if (file.exists()){
             bitmap  = BitmapFactory.decodeFile(image)
-            val alert = ImageAlertDialog(bitmap)
-            alert.show(fragmentManager, ImageAlertDialog.TAG)
+                val alert = ImageAlertDialog(bitmap)
+                alert.show(fragmentManager, ImageAlertDialog.TAG)
         }else{
             val uri = image.toUri()
             val uriFile = File(uri.path!!)

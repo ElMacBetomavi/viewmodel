@@ -30,6 +30,7 @@ import com.practica.ejemplodagger.data.entities.ProductosEntity
 import com.practica.ejemplodagger.databinding.FragmentRegistrarProductoBinding
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
+import com.practica.ejemplodagger.sis.util.TakePicture
 import com.practica.ejemplodagger.sis.util.URIPathHelper
 import com.practica.ejemplodagger.sis.viewmodel.RegisterProductViewModel
 import com.practica.ventasmoviles.sys.viewModel.productos.ErrorMessage
@@ -50,6 +51,7 @@ class RegistrarProductoFragment : Fragment() {
     var PhotoPath=""
     var editFlag = false
     private lateinit var initProduct: ProductosEntity
+    var newProduct = ProductosEntity(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,10 +100,12 @@ class RegistrarProductoFragment : Fragment() {
         registerProductViewModel.setMultiopcionsField()
 
         binding.saveBtn.setOnClickListener{
-            val producto:ProductosEntity = getDataProducto()
-            producto.id = initProduct.id
-            producto.imagen = PhotoPath
-            registerProductViewModel.validateCategoria(producto, editFlag)
+            getDataProducto()
+            println("imagen path $PhotoPath")
+            println("imagen ${newProduct.imagen}")
+            newProduct.id = initProduct.id
+
+            registerProductViewModel.validateCategoria(newProduct, editFlag)
         }
 
         binding.imageField.setOnClickListener{
@@ -139,20 +143,19 @@ class RegistrarProductoFragment : Fragment() {
         fragmentTransition.commit()
     }
 
+    val takePic = TakePicture()
+
     /**devuelve la informacion registrada en el formulario para posteriormente ser validada*/
-    fun getDataProducto():ProductosEntity{
-        return ProductosEntity(0,
-            PhotoPath,
-            binding.nameField.text.toString(),
-            binding.costoField.text.toString().toFloatOrNull(),
-            binding.precioMenuField.text.toString().toFloatOrNull(),
-            binding.precioMayoField.text.toString().toFloatOrNull(),
-            binding.categoriaValue.text.toString(),
-            binding.marcaField.text.toString(),
-            binding.colorField.text.toString(),
-            binding.unidadMedidaValue.text.toString(),
-            binding.cantidadMinField.text.toString().toIntOrNull(),
-        )
+    fun getDataProducto(){
+        newProduct.nombre = binding.nameField.text.toString()
+        newProduct.costo= binding.costoField.text.toString().toFloatOrNull()
+        newProduct.precioMenudeo = binding.precioMenuField.text.toString().toFloatOrNull()
+        newProduct.precioMayoreo=binding.precioMayoField.text.toString().toFloatOrNull()
+        newProduct.categoria =binding.categoriaValue.text.toString()
+        newProduct.marca= binding.marcaField.text.toString()
+        newProduct.color = binding.colorField.text.toString()
+        newProduct.unidadMedida=binding.unidadMedidaValue.text.toString()
+        newProduct.cantidadMin=binding.cantidadMinField.text.toString().toIntOrNull()
     }
 
     /** configura los valores iniciales cuando se selecciona la opcion de editar*/
@@ -173,6 +176,7 @@ class RegistrarProductoFragment : Fragment() {
 
         val file = File(initProduct.imagen!!)
         if(file.exists()){
+            newProduct.imagen = PhotoPath
             val bitmap: Bitmap = BitmapFactory.decodeFile(initProduct.imagen)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
             binding.imageField.setImageBitmap(imageScaled)
@@ -184,7 +188,7 @@ class RegistrarProductoFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun selectImage(){
-        val file = File(PhotoPath)
+        val file = File(newProduct.imagen!!)
         if(file.exists()){
             val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
             alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
@@ -204,8 +208,14 @@ class RegistrarProductoFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun showSelectPicsourchalert(){
         val alert = SelectSourcePicDialog({-> selectPictureGalery()},
-            {-> dispatchTakePictureIntent()})
+            {-> takePicture()})
         alert.show(parentFragmentManager, "imagen")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun takePicture(){
+       val path = takePic.dispatchTakePictureIntent(requireContext(), requireActivity())
+        println("path desde clase $path")
     }
 
     fun selectPictureGalery(){
@@ -273,6 +283,8 @@ class RegistrarProductoFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            println("path funciona")
+            newProduct.imagen = PhotoPath
             val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
             binding.imageField.setImageBitmap(imageScaled)
@@ -280,8 +292,6 @@ class RegistrarProductoFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             val imageUri : Uri? = data.data
-            //PhotoPath = imageUri.toString()
-            //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
             val uriPathHelper = URIPathHelper()
             val realpath = uriPathHelper.getPath(context!!, imageUri!!)
 

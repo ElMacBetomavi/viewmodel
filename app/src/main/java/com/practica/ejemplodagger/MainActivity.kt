@@ -3,13 +3,13 @@ package com.practica.ejemplodagger
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.practica.ejemplodagger.databinding.ActivityMainBinding
 import com.practica.ejemplodagger.sis.ui.view.CategoriaFragment
 import com.practica.ejemplodagger.sis.viewmodel.MainViewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,4 +47,8 @@ class MainActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
+
+
+
+
 }
