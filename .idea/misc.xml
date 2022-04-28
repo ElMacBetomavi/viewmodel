@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_clientes.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_product.xml" value="0.12760416666666666" />
         <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_proveedor.xml" value="0.1" />
+        <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_register_cliente.xml" value="0.22" />
         <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_register_proveedor.xml" value="0.25" />
         <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/fragment_user.xml" value="0.11367753623188406" />
         <entry key="..\:/Users/humacias/Desktop/android/27-04-2022/ejemploDagger/app/src/main/res/layout/image_view_alert_dialog.xml" value="0.10572916666666667" />

@@ -156,6 +156,7 @@ class RegisterProveedorFragment : Fragment() {
         binding.ladaField.setText(initProveedor.lada.toString())
         binding.telefonoField.setText(initProveedor.telefono.toString())
         binding.tipoTelValue.setText(initProveedor.tipoTel)
+        binding.labelProveedor.text = "Editar Cliente"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -174,7 +175,7 @@ class RegisterProveedorFragment : Fragment() {
         binding.tipoTelValue.isFocusable =false
         binding.interiorField.isFocusable=false
         binding.tipoTelField.isFocusable=false
-
+        binding.labelProveedor.text = "Detalles"
     }
 
 

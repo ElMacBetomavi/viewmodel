@@ -14,39 +14,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.practica.ejemplodagger.R
-import com.practica.ejemplodagger.data.entities.ProductosEntity
-import com.practica.ejemplodagger.data.entities.ProveedoresEntity
-import com.practica.ejemplodagger.databinding.FragmentProveedorBinding
-import com.practica.ejemplodagger.sis.ui.adapter.ProveedorAdapter
-import com.practica.ejemplodagger.sis.viewmodel.ProveedorViewModel
+import com.practica.ejemplodagger.data.entities.ClientesEntity
+import com.practica.ejemplodagger.databinding.FragmentClientesBinding
+import com.practica.ejemplodagger.sis.ui.adapter.ClientesAdapter
+import com.practica.ejemplodagger.sis.viewmodel.ClientesViewModel
 
 
-class ProveedorFragment : Fragment() {
+class ClientesFragment : Fragment() {
 
-    private var _binding: FragmentProveedorBinding? = null
+    private var _binding: FragmentClientesBinding? = null
     private val binding get() = _binding!!
-    private val proveedorViewModel:ProveedorViewModel by viewModels()
+    private val clientesViewModel:ClientesViewModel by viewModels()
     private lateinit var addBtn: FloatingActionButton
     private lateinit var search: SearchView
-    private var proveedorList = mutableListOf<ProveedoresEntity>()
-    private lateinit var adapter: ProveedorAdapter
-
+    private lateinit var adapter: ClientesAdapter
+    private var clientesList = mutableListOf<ClientesEntity>()
 
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addBtn = activity?.findViewById(R.id.add_categoria)!!
         search = activity?.findViewById(R.id.search)!!
-        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)?.title = "Proveedores"
-        activity?.findViewById<SearchView>(R.id.search)!!.visibility = View.GONE
+        activity?.findViewById<MaterialToolbar>(R.id.topAppBar)?.title = "Clientes"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentProveedorBinding.inflate(inflater, container, false)
+        _binding = FragmentClientesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -55,25 +51,48 @@ class ProveedorFragment : Fragment() {
 
         initRecyclerView()
 
-        //cambia de a fragmento de agregar categoria
-        proveedorViewModel.proveedoresList.observe(viewLifecycleOwner, Observer { currentProductList ->
-            setProveedoresList(currentProductList)
+        clientesViewModel.clientesList.observe(viewLifecycleOwner, Observer { currentClientList ->
+            setProveedoresList(currentClientList)
         })
 
-        proveedorViewModel.getAllProveedores()
+        clientesViewModel.getAllClientes()
 
         addBtn.setOnClickListener{
             changeAddFragment()
         }
 
+        //atiende el search view encargado de filtrar la lista de categorias
+        search.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    clientesViewModel.searchCategories(query!!)
+                    return true
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    if (query=="")clientesViewModel.getAllClientes()
+                    return true
+                }
+            }
+        )
+
     }
 
     fun initRecyclerView(){
-        if(proveedorList.isNotEmpty()) binding.messageProveedores.visibility =View.GONE
-        adapter = ProveedorAdapter()
-        adapter.setListProducts(proveedorList)
-        binding.rvProveedores.layoutManager = LinearLayoutManager(parentFragment?.context)
-        binding.rvProveedores.adapter = adapter
+        if(clientesList.isNotEmpty()) binding.messageClientes.visibility =View.GONE
+        adapter = ClientesAdapter()
+        adapter.setListProducts(clientesList)
+        binding.rvClientes.layoutManager = LinearLayoutManager(parentFragment?.context)
+        binding.rvClientes.adapter = adapter
+    }
+
+    fun setProveedoresList(clientes:MutableList<ClientesEntity>){
+        clientesList.clear()
+        clientesList = clientes
+        if(clientesList.isNotEmpty()){
+            binding.messageClientes.visibility = View.GONE
+        }else binding.messageClientes.visibility = View.VISIBLE
+        adapter.setListProducts(clientesList)
     }
 
     private fun changeAddFragment(){
@@ -81,25 +100,16 @@ class ProveedorFragment : Fragment() {
         val fragmentTransition = transition.beginTransaction()
         fragmentTransition.setCustomAnimations(R.anim.fade_in,R.anim.fade_out,
             R.anim.fade_in, R.anim.fade_out)
-        fragmentTransition.replace(R.id.fragment_container, RegisterProveedorFragment(), "registrar-proveedor")
+        fragmentTransition.replace(R.id.fragment_container, RegisterClienteFragment(), "registrar-cliente")
         fragmentTransition.addToBackStack(null)
         fragmentTransition.commit()
-    }
-
-    fun setProveedoresList(proveedores:MutableList<ProveedoresEntity>){
-        proveedorList.clear()
-        proveedorList = proveedores
-        if(proveedorList.isNotEmpty()){
-            binding.messageProveedores.visibility = View.GONE
-        }else binding.messageProveedores.visibility = View.VISIBLE
-        adapter.setListProducts(proveedorList)
     }
 
     /**opciones de la tarjeta del producto, ver detalles, eliminar, editar*/
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val position = adapter.getPosition()
-        val product = proveedorList[position]
-        proveedorViewModel.itemSelect(item,product,parentFragmentManager)
+        val product = clientesList[position]
+        clientesViewModel.itemSelect(item,product,parentFragmentManager)
         return true
     }
 
@@ -113,4 +123,6 @@ class ProveedorFragment : Fragment() {
         super.onDestroy()
         activity?.findViewById<SearchView>(R.id.search)!!.visibility = View.VISIBLE
     }
+
+
 }

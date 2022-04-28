@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor() :ViewModel() {
                 R.id.ventas ->
                     Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
                 R.id.mis_clientes ->
-                    Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
+                    fragment.postValue(ClientesFragment())
                 R.id.inventario ->
                     Toast.makeText(context, "You Clicked : " + item.title, Toast.LENGTH_SHORT).show()
             }

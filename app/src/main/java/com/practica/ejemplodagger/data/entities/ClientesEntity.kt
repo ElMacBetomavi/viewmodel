@@ -18,7 +18,6 @@ data class ClientesEntity(
     var colonia:String?="",
     var municipio:String?="",
     var estado:String?="",
-    var contacto:String?="",
     var lada:Int?=0,
     var telefono:Int?=0,
     var tipoTel:String?="",

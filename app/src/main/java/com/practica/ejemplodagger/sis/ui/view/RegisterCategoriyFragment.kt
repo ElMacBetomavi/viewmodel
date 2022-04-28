@@ -31,9 +31,12 @@ import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
 import com.practica.ejemplodagger.sis.util.CategoriaErrorMessage
 import com.practica.ejemplodagger.sis.viewmodel.RegisterCategoryViewModel
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
+
 
 private const val ARG_PARAM1 = "id"
 private const val ARG_PARAM2 = "product_id"
@@ -247,6 +250,7 @@ class RegisterCategoriyFragment : Fragment() {
 
     /**atiende las acciones de los intent de seleccion de imagen de galeria
      * o tomar fotografia con la camara*/
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -261,12 +265,33 @@ class RegisterCategoriyFragment : Fragment() {
             val imageUri : Uri? = data.data
             //PhotoPath = imageUri.toString()
             //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
+            val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, imageUri)
+            val file = createImageFile()
 
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+            val bArray = bos.toByteArray()
+            newCategory.image = PhotoPath
+            file.writeBytes(bArray)
             println("path $")
-            binding.imageField.setImageURI(imageUri)
+            binding.imageField.setImageBitmap(bitmap)
 
         }
     }
 
+    @Throws(IOException::class)
+    fun savebitmap(bmp: Bitmap): File? {
+        val bytes = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes)
+        val f = File(
+            Environment.getExternalStorageDirectory()
+                .toString() + File.separator + "testimage.jpg"
+        )
+        f.createNewFile()
+        val fo = FileOutputStream(f)
+        fo.write(bytes.toByteArray())
+        fo.close()
+        return f
+    }
 
 }

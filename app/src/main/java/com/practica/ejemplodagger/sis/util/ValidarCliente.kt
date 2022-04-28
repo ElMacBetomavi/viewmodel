@@ -1,95 +1,86 @@
 package com.practica.ejemplodagger.sis.util
 
-import com.practica.ejemplodagger.data.entities.ProveedoresEntity
-import com.practica.ventasmoviles.sys.viewModel.productos.ErrorMessage
+import com.practica.ejemplodagger.data.entities.ClientesEntity
 
-class ValidarProveedor {
+class ValidarCliente {
 
-    fun validateProveedor(proveedor: ProveedoresEntity): ProveedorErrorMessage {
+    fun validateCliente(cliente: ClientesEntity): ClientErrorMessage {
 
-        val currentErrorMessage = ProveedorErrorMessage()
-        //val flats = mutableListOf(true,true,true,true,true,true,true,true,true)
-        val flats = BooleanArray(11){true}
+        val currentErrorMessage = ClientErrorMessage()
+        val flats = BooleanArray(15){true}
 
-        if(!validateName(proveedor.nombre!!)){
+        if(!validateName(cliente.nombre!!)){
             currentErrorMessage.nombre = "el nombre debe de tener minimo 5 caracteres maximo 70"
             flats[0]=false
         }else {
             currentErrorMessage.nombre=null
         }
 
-        if(validateCalle(proveedor.calle!!)){
+        if(validateCalle(cliente.calle!!)){
             currentErrorMessage.calle = null
         }else {
             currentErrorMessage.calle = "calle debe tener almenos 1 caracter maximo 100"
             flats[1]=false
         }
 
-        if(!validateNumero(proveedor.numero!!)){
+        if(!validateNumero(cliente.numero!!)){
             currentErrorMessage.numero = "numero debe de tener al menos 1 caracter maximo 20"
             flats[2]=false
         }else {
             currentErrorMessage.numero = null
         }
 
-        if(proveedor.codigoPostal == null) proveedor.codigoPostal = 0
+        if(cliente.codigoPostal == null) cliente.codigoPostal = 0
 
-        if(!validateNumero(proveedor.codigoPostal!!)){
+        if(!validateNumero(cliente.codigoPostal!!)){
             currentErrorMessage.codigoPostal = "codigo postal debe tener 5 numeros"
             flats[3]=false
         }else {
             currentErrorMessage.codigoPostal = null
         }
 
-        if(!validateCharacters(proveedor.colonia!!)){
+        if(!validateCharacters(cliente.colonia!!)){
             currentErrorMessage.colonia = "colonia debe tener 5 caracteres"
             flats[4]=false
         }else {
             currentErrorMessage.colonia = null
         }
 
-        if(!validateCharacters(proveedor.municipio!!)){
+        if(!validateCharacters(cliente.municipio!!)){
             currentErrorMessage.municipio = "municipio debe tener 5 caracteres"
             flats[5]=false
         }else {
             currentErrorMessage.municipio = null
         }
 
-        if(!validateCharacters(proveedor.estado!!)){
+        if(!validateCharacters(cliente.estado!!)){
             currentErrorMessage.estado = "estado debe tener 5 caracteres"
             flats[6]=false
         }else {
             currentErrorMessage.estado = null
         }
 
-        if(!validateContacto(proveedor.contacto!!)){
-            currentErrorMessage.contacto = "contacto debe tener 5 al menos caracteres"
-            flats[7]=false
-        }else {
-            currentErrorMessage.contacto = null
-        }
+        if(cliente.lada == null) cliente.lada = 0
 
-        if(proveedor.lada == null) proveedor.lada = 0
-
-        if(!validateLada(proveedor.lada!!)){
+        if(!validateLada(cliente.lada!!)){
             currentErrorMessage.lada = "lada debe de tener minimo 2 numeros maximo 3"
-            flats[8]=false
+            flats[7]=false
         }else {
             currentErrorMessage.lada = null
         }
 
-        if(proveedor.telefono == null) proveedor.telefono = 0
+        if(cliente.telefono == null) cliente.telefono = 0
 
-        if(!validatetelefono(proveedor.telefono!!)){
+        if(!validatetelefono(cliente.telefono!!)){
             currentErrorMessage.telefono = "numero debe de tener al menos 7 caracteres maximo 8"
-            flats[9]=false
+            flats[8]=false
         }else {
             currentErrorMessage.telefono = null
         }
 
-        if(proveedor.tipoTel==""){
+        if(cliente.tipoTel==""){
             currentErrorMessage.tipoTel = "Seleccione una opción"
-            flats[10]=false
+            flats[9]=false
         }else {
             currentErrorMessage.tipoTel = null
         }
@@ -134,6 +125,4 @@ class ValidarProveedor {
         val strinTelefonomberN = telefono.toString()
         return strinTelefonomberN.length in 7..8
     }
-
-
 }

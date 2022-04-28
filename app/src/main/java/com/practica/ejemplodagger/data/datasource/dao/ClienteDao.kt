@@ -21,7 +21,7 @@ interface ClienteDao {
     @Update
     suspend fun updateCliente(cliente: ClientesEntity): Int
 
-    @Query("SELECT * FROM clientes_entity WHERE estado like :value OR nombre like :value ORDER BY nombre COLLATE NOCASE ASC")
+    @Query("SELECT * FROM clientes_entity WHERE colonia like :value OR nombre like :value ORDER BY nombre COLLATE NOCASE ASC")
     suspend fun search(value: String?):  MutableList<ClientesEntity>?
 
 }

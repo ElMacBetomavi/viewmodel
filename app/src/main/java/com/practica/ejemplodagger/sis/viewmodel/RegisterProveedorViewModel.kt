@@ -45,10 +45,10 @@ class RegisterProveedorViewModel: ViewModel() {
                     //en caso de agregar nueva categoria, valida si ya fue registrada
                     if (!proveedorExist) {
                         addNewProveedor(proveedor)
-                        message.postValue("Producto agregado")
+                        message.postValue("Proveedor agregado")
                         changeFragment.postValue(true)
                     }else{
-                        message.postValue("El producto ya fue previamente registrado y no puede duplicarse")
+                        message.postValue("El proveedor ya fue previamente registrado y no puede duplicarse")
                     }
                 } else {
                     edit(proveedor)
