@@ -11,16 +11,17 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.MaterialToolbar
@@ -30,17 +31,16 @@ import com.practica.ejemplodagger.data.entities.ProductosEntity
 import com.practica.ejemplodagger.databinding.FragmentRegistrarProductoBinding
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
-import com.practica.ejemplodagger.sis.util.TakePicture
-import com.practica.ejemplodagger.sis.util.URIPathHelper
 import com.practica.ejemplodagger.sis.viewmodel.RegisterProductViewModel
 import com.practica.ventasmoviles.sys.viewModel.productos.ErrorMessage
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.*
 
-
 private const val ARG_PARAM1 = "id"
 private const val ARG_PARAM2 = "product_id"
+@Suppress("DEPRECATION")
 class RegistrarProductoFragment : Fragment() {
 
     private var _binding: FragmentRegistrarProductoBinding? = null
@@ -97,14 +97,15 @@ class RegistrarProductoFragment : Fragment() {
             initOptionsRegisterField(categoriesList)
         })
 
+        registerProductViewModel.message.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context,it,Toast.LENGTH_LONG).show()
+        })
+
         registerProductViewModel.setMultiopcionsField()
 
         binding.saveBtn.setOnClickListener{
             getDataProducto()
-            println("imagen path $PhotoPath")
-            println("imagen ${newProduct.imagen}")
             newProduct.id = initProduct.id
-
             registerProductViewModel.validateCategoria(newProduct, editFlag)
         }
 
@@ -142,8 +143,6 @@ class RegistrarProductoFragment : Fragment() {
         fragmentTransition.replace(R.id.fragment_container, ProductFragment(), "producto")
         fragmentTransition.commit()
     }
-
-    val takePic = TakePicture()
 
     /**devuelve la informacion registrada en el formulario para posteriormente ser validada*/
     fun getDataProducto(){
@@ -208,14 +207,8 @@ class RegistrarProductoFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun showSelectPicsourchalert(){
         val alert = SelectSourcePicDialog({-> selectPictureGalery()},
-            {-> takePicture()})
+            {-> dispatchTakePictureIntent()})
         alert.show(parentFragmentManager, "imagen")
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
-    private fun takePicture(){
-       val path = takePic.dispatchTakePictureIntent(requireContext(), requireActivity())
-        println("path desde clase $path")
     }
 
     fun selectPictureGalery(){
@@ -249,6 +242,7 @@ class RegistrarProductoFragment : Fragment() {
                                 it
                             )
                         }
+                        println("uri path $photoURI")
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                     }
@@ -283,7 +277,6 @@ class RegistrarProductoFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            println("path funciona")
             newProduct.imagen = PhotoPath
             val bitmap: Bitmap = BitmapFactory.decodeFile(PhotoPath)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
@@ -292,11 +285,15 @@ class RegistrarProductoFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             val imageUri : Uri? = data.data
-            val uriPathHelper = URIPathHelper()
-            val realpath = uriPathHelper.getPath(context!!, imageUri!!)
+            val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, imageUri)
 
-            println("path $realpath")
-            binding.imageField.setImageURI(imageUri)
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+            val bArray: ByteArray = bos.toByteArray()
+
+            println("path funciona")
+            binding.imageField.setImageBitmap(bitmap)
+            //binding.imageField.setImageURI(imageUri)
 
         }
     }

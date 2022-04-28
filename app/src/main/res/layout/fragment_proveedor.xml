@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".sis.ui.view.ProductFragment">
+    tools:context=".sis.ui.view.ProveedorFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,15 +13,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_products"
+            android:id="@+id/rv_proveedores"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
     <TextView
-        android:id="@+id/message_producto"
+        android:id="@+id/message_proveedores"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="sin productos registrados"
+        android:text="sin proveedores registrados"
         android:gravity="center" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

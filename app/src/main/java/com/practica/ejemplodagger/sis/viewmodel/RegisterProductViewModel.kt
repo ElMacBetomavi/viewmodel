@@ -45,10 +45,10 @@ class RegisterProductViewModel:ViewModel() {
                     //en caso de agregar nueva categoria, valida si ya fue registrada
                     if (!productExist) {
                         addNewProduct(product)
-                        message.postValue("Categoria agregada")
+                        message.postValue("Producto agregado")
                         changeFragment.postValue(true)
                     }else{
-                        message.postValue("la categoria ya fue previamente registrada y no puede duplicarse")
+                        message.postValue("El producto ya fue previamente registrado y no puede duplicarse")
                     }
                 }else{
                     edit(product)

@@ -5,21 +5,21 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.practica.ejemplodagger.data.entities.ScheduleEntity
+import com.practica.ejemplodagger.data.entities.ProveedoresEntity
 
-class DeleteScheduleDialog(
-    private val schedule : ScheduleEntity,
-    private val updateList: (schedule: ScheduleEntity) -> Unit
+class DeleteProveedorDialog(
+    private val proveedor: ProveedoresEntity,
+    private val updateList: (proveedor: ProveedoresEntity) -> Unit
 ) : DialogFragment()  {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("Esta seguro de eliminar la cita ?")
+            .setMessage("Esta seguro de eliminar el proveedor  ${proveedor.nombre}?")
             .setView(view)
             .setPositiveButton("si") { _, _ ->
-                updateList(schedule)
-                Toast.makeText(context, "cita eliminada", Toast.LENGTH_LONG).show()
+                updateList(proveedor)
+                Toast.makeText(context, "proveedor eliminado ", Toast.LENGTH_LONG).show()
             }
             .setNegativeButton("no"){ view, _ ->
                 view.dismiss()

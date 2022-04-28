@@ -57,6 +57,7 @@ class ProductFragment : Fragment() {
         })
 
         productViewModel.getAllProducts()
+
         addBtn.setOnClickListener{ addCategory() }
 
         search.setOnQueryTextListener(object :

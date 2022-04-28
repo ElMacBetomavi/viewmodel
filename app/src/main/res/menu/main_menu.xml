@@ -10,6 +10,10 @@
         android:title="Productos"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/proveedores"
+        android:title="Proveedores"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/compras"
         android:title="Compras"
         app:showAsAction="ifRoom"/>
@@ -25,5 +29,6 @@
         android:id="@+id/inventario"
         android:title="Inventario"
         app:showAsAction="ifRoom"/>
+
 
 </menu>

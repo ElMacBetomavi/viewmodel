@@ -30,7 +30,6 @@ import com.practica.ejemplodagger.databinding.FragmentRegisterCategoriyBinding
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.ImageExistAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.SelectSourcePicDialog
 import com.practica.ejemplodagger.sis.util.CategoriaErrorMessage
-import com.practica.ejemplodagger.sis.util.URIPathHelper
 import com.practica.ejemplodagger.sis.viewmodel.RegisterCategoryViewModel
 import java.io.File
 import java.io.IOException
@@ -262,10 +261,8 @@ class RegisterCategoriyFragment : Fragment() {
             val imageUri : Uri? = data.data
             //PhotoPath = imageUri.toString()
             //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
-            val uriPathHelper = URIPathHelper()
-            val realpath = uriPathHelper.getPath(context!!, imageUri!!)
 
-            println("path $realpath")
+            println("path $")
             binding.imageField.setImageURI(imageUri)
 
         }

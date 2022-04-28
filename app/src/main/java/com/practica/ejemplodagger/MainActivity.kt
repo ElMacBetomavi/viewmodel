@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     fun changeFragment(fragment:Fragment){
         val fragmentTransition = supportFragmentManager.beginTransaction()
+        fragmentTransition.setCustomAnimations(R.anim.enter_from_right,R.anim.out_from_right)
         fragmentTransition.replace(R.id.fragment_container,fragment)
         fragmentTransition.commit()
     }

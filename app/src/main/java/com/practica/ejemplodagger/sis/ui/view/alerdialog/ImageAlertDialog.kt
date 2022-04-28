@@ -3,14 +3,10 @@ package com.practica.ejemplodagger.sis.ui.view.alerdialog
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.textfield.TextInputEditText
 import com.practica.ejemplodagger.R
-import com.practica.ejemplodagger.data.entities.UserEntity
 
 
 class ImageAlertDialog(

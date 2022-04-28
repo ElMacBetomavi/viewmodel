@@ -2,7 +2,6 @@ package com.practica.ejemplodagger.data.repository
 
 import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.data.entities.CategoriaEntity
-import com.practica.ejemplodagger.data.entities.UserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
