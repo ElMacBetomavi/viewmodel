@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -36,6 +37,7 @@ class ClientesFragment : Fragment() {
         addBtn = activity?.findViewById(R.id.add_categoria)!!
         search = activity?.findViewById(R.id.search)!!
         activity?.findViewById<MaterialToolbar>(R.id.topAppBar)?.title = "Clientes"
+        activity?.findViewById<ImageButton>(R.id.filter)!!.visibility = View.GONE
     }
 
     override fun onCreateView(
