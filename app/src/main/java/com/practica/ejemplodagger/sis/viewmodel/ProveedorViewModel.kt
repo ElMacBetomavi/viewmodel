@@ -7,12 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practica.ejemplodagger.MainApplication
-import com.practica.ejemplodagger.data.domain.DetailsProveedorUseCase
 import com.practica.ejemplodagger.data.domain.EditProveedorUseCase
 import com.practica.ejemplodagger.data.entities.ProveedoresEntity
 import com.practica.ejemplodagger.data.repository.ProveedoresRepository
+import com.practica.ejemplodagger.sis.ui.view.RegisterProveedorFragment
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.DeleteAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.DeleteProveedorDialog
+import com.practica.ejemplodagger.sis.util.ChangeFragment
 import kotlinx.coroutines.launch
 
 class ProveedorViewModel:ViewModel() {
@@ -40,8 +41,8 @@ class ProveedorViewModel:ViewModel() {
     fun itemSelect(item: MenuItem, proveedor: ProveedoresEntity, fragmentManager: FragmentManager){
         when (item.title) {
             "Ver detalles" -> {
-                val detailProveedorUseCase = DetailsProveedorUseCase()
-                detailProveedorUseCase.detail(proveedor.id,fragmentManager)
+                val changeFragment = ChangeFragment()
+                changeFragment.change(proveedor.id,"detalles", RegisterProveedorFragment() ,fragmentManager,true)
             }
             "Eliminar" -> {
                 val alert = DeleteProveedorDialog(proveedor){ deleteproveedor -> deleteProveedor(deleteproveedor) }

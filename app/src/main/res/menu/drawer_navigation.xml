@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/categoria"
+            android:title="Categoria"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/productos"
+            android:title="Productos"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/proveedores"
+            android:title="Proveedores"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/compras"
+            android:title="Compras"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/ventas"
+            android:title="Ventas"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/mis_clientes"
+            android:title="Mis clientes"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/inventario"
+            android:title="Inventario"
+            app:showAsAction="ifRoom"/>
+    </group>
+
+</menu>

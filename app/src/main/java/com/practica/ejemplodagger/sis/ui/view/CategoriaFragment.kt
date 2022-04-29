@@ -1,11 +1,14 @@
 package com.practica.ejemplodagger.sis.ui.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -29,11 +32,13 @@ class CategoriaFragment : Fragment() {
     private lateinit var addBtn:FloatingActionButton
     private lateinit var search:SearchView
 
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          addBtn = activity?.findViewById(R.id.add_categoria)!!
          search = activity?.findViewById(R.id.search)!!
          activity?.findViewById<MaterialToolbar>(R.id.topAppBar)?.title = "Categorias"
+         activity?.findViewById<ImageButton>(R.id.filter)!!.visibility = View.GONE
     }
 
     override fun onCreateView(

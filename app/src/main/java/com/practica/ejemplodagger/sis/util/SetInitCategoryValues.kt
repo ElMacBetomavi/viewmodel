@@ -17,7 +17,6 @@ class SetInitCategoryValues {
         categorias.map { category ->
             if(category.id == id) initcategoria = category
         }
-        println("categoria metodo "+ initcategoria)
         return  initcategoria
     }
 

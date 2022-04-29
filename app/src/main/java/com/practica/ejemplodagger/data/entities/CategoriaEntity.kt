@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class CategoriaEntity(
     @PrimaryKey(autoGenerate = true)
     var id:Int,
-    var name:String?,
+    var name:String,
     var description:String?,
     var image:String?="")

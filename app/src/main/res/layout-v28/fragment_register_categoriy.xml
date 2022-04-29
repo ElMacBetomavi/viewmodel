@@ -6,17 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".sis.ui.view.RegisterCategoriyFragment"
     android:orientation="vertical"
-    android:padding="10sp">
+    android:layout_margin="10sp">
 
     <TextView
-        tools:override="true"
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Agregar Categoria"
         android:textAlignment="center"
         android:textSize="24sp"
-        android:textColor="@color/myblue"
         android:layout_marginTop="30sp"/>
     <ImageView
         android:id="@+id/image_field"
@@ -33,13 +31,14 @@
         android:layout_width="match_parent"
         android:hint="Categoria"
         android:layout_marginBottom="5sp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:outlineSpotShadowColor="@color/black">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/categoria_register_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:shadowColor="@color/black"/>
+            />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         app:errorEnabled="true"

@@ -14,6 +14,6 @@ data class ProductosEntity(
     var categoria:String?="",
     var marca:String?="",
     var color:String?="",
-    var unidadMedida:String?="",
+    var unidadMedida:String="",
     var cantidadMin:Int?=0,
     var imagen:String?="")

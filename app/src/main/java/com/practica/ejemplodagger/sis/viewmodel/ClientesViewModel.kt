@@ -7,15 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practica.ejemplodagger.MainApplication
-import com.practica.ejemplodagger.data.domain.DetailsClientUseCase
-import com.practica.ejemplodagger.data.domain.DetailsProveedorUseCase
 import com.practica.ejemplodagger.data.domain.EditClientUseCase
-import com.practica.ejemplodagger.data.domain.EditProveedorUseCase
 import com.practica.ejemplodagger.data.entities.ClientesEntity
 import com.practica.ejemplodagger.data.repository.ClienteRepository
+import com.practica.ejemplodagger.sis.ui.view.RegisterClienteFragment
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.DeleteAlertDialog
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.DeleteClienteDialog
+import com.practica.ejemplodagger.sis.util.ChangeFragment
 import kotlinx.coroutines.launch
+
 
 class ClientesViewModel: ViewModel() {
 
@@ -49,8 +49,9 @@ class ClientesViewModel: ViewModel() {
     fun itemSelect(item: MenuItem, cliente: ClientesEntity, fragmentManager: FragmentManager){
         when (item.title) {
             "Ver detalles" -> {
-                val detailClienteUseCase = DetailsClientUseCase()
-                detailClienteUseCase.detail(cliente.id,fragmentManager)
+                val changeFragment = ChangeFragment()
+                changeFragment.change(cliente.id,"detalles", RegisterClienteFragment() ,fragmentManager,true)
+
             }
             "Eliminar" -> {
                 val alert = DeleteClienteDialog(cliente){ deletecliente -> deleteCliente(deletecliente) }
@@ -66,5 +67,7 @@ class ClientesViewModel: ViewModel() {
             else -> println("otro")
         }
     }
+
+
 
 }

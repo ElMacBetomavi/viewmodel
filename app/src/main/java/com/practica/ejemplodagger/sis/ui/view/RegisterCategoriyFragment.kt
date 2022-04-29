@@ -39,7 +39,7 @@ import java.util.*
 
 
 private const val ARG_PARAM1 = "id"
-private const val ARG_PARAM2 = "product_id"
+private const val ARG_PARAM2 = "categoryName"
 
 @Suppress("DEPRECATION")
 class RegisterCategoriyFragment : Fragment() {
@@ -58,7 +58,7 @@ class RegisterCategoriyFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             id = it.getInt(ARG_PARAM1,0)
-            categoria = it.getString(ARG_PARAM2,"")
+            categoria = it.getString(ARG_PARAM2)
         }
         activity?.findViewById<FloatingActionButton>(R.id.add_categoria)!!.visibility = View.GONE
         activity?.findViewById<MaterialToolbar>(R.id.topAppBar)!!.visibility = View.GONE
@@ -79,8 +79,14 @@ class RegisterCategoriyFragment : Fragment() {
 
         initcategoria = CategoriaEntity(0,"","")
 
+        //si existe un id es porque se llamo la opcion de editar y procede a setear los valores en los campos
         if (id!=0){
             registerCategoryViewModel.setInitCategoryValues(id!!)
+        }
+
+        if(categoria!=null) {
+            desactiveFields()
+            registerCategoryViewModel.setValuesWhenDetailsProductClicked(categoria!!)
         }
 
         registerCategoryViewModel.errorMessageCategoria.observe(viewLifecycleOwner, Observer { errormessage->
@@ -129,34 +135,33 @@ class RegisterCategoriyFragment : Fragment() {
         fragmentTransition.commit()
     }
 
+    fun desactiveFields(){
+        binding.title.text="Detalles"
+        binding.saveCategoriaBtn.isEnabled=false
+        binding.imageField.isEnabled=false
+        binding.categoriaRegisterField.isFocusable=false
+        binding.descripcionCategoriaField.isFocusable=false
+
+    }
+
     /**si se selecciono editar,carga los valores previos a editar en el formulario*/
     private fun setEditValue(initCategory:CategoriaEntity){
         editFlag=true
         PhotoPath = initCategory.image!!
-
+        newCategory.image=initCategory.image!!
         initcategoria =initCategory
         binding.categoriaRegisterField.setText(initCategory.name)
         binding.descripcionCategoriaField.setText(initCategory.description)
         binding.categoriaRegisterField.isFocusable = false
         binding.saveCategoriaBtn.text = "editar"
         binding.title.text = "Editar"
-        //
+
         val file = File(initCategory.image!!)
         if(file.exists()){
             newCategory.image = PhotoPath
             val bitmap: Bitmap = BitmapFactory.decodeFile(initCategory.image)
             val imageScaled = Bitmap.createScaledBitmap(bitmap, 550, 400, false)
             binding.imageField.setImageBitmap(imageScaled)
-        }else {
-//            val uri = initCategory.image!!.toUri()
-//            println("uri $uri")
-//            binding.imageField.setImageURI(uri)
-//            val sourceFile = DocumentFile.fromSingleUri(requireContext(), uri)
-//
-//            if (sourceFile!!.exists()) {
-//                println("imagen uri "+initCategory.image)
-//                binding.imageField.setImageURI(uri)
-//            }
         }
     }
 
@@ -165,7 +170,7 @@ class RegisterCategoriyFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun selectImage(){
-        val file = File(PhotoPath)
+        val file = File(newCategory.image!!)
         if(file.exists()){
             val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
             alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
@@ -199,7 +204,6 @@ class RegisterCategoriyFragment : Fragment() {
    // codigo para tomar foto con camara
     @RequiresApi(Build.VERSION_CODES.N)
     private fun dispatchTakePictureIntent() {
-       println("tomar foto 100+")
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             // Ensure that there's a camera activity to handle the intent
             activity?.let {
@@ -263,35 +267,16 @@ class RegisterCategoriyFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             val imageUri : Uri? = data.data
-            //PhotoPath = imageUri.toString()
-            //val realpath = ImageFilePath.getPath(context!!,imageUri!!)
             val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, imageUri)
             val file = createImageFile()
-
             val bos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
             val bArray = bos.toByteArray()
-            newCategory.image = PhotoPath
             file.writeBytes(bArray)
-            println("path $")
             binding.imageField.setImageBitmap(bitmap)
-
+            newCategory.image = PhotoPath
         }
     }
 
-    @Throws(IOException::class)
-    fun savebitmap(bmp: Bitmap): File? {
-        val bytes = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes)
-        val f = File(
-            Environment.getExternalStorageDirectory()
-                .toString() + File.separator + "testimage.jpg"
-        )
-        f.createNewFile()
-        val fo = FileOutputStream(f)
-        fo.write(bytes.toByteArray())
-        fo.close()
-        return f
-    }
 
 }

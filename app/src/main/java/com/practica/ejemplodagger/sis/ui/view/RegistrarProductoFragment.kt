@@ -195,7 +195,6 @@ class RegistrarProductoFragment : Fragment() {
             val uri = PhotoPath.toUri()
             val sourceFile = DocumentFile.fromSingleUri(requireContext(), uri)
             if (sourceFile!!.exists()) {
-                //imageView.setImageURI(uri)
                 val alert = ImageExistAlertDialog{ -> showSelectPicsourchalert() }
                 alert.show(parentFragmentManager, ImageExistAlertDialog.TAG)
             }else{
@@ -273,6 +272,7 @@ class RegistrarProductoFragment : Fragment() {
 
     /**atiende las acciones de los intent de seleccion de imagen de galeria
      * o tomar fotografia con la camara*/
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -286,15 +286,13 @@ class RegistrarProductoFragment : Fragment() {
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null){
             val imageUri : Uri? = data.data
             val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, imageUri)
-
+            val file = createImageFile()
             val bos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
-            val bArray: ByteArray = bos.toByteArray()
-
-            println("path funciona")
+            val bArray = bos.toByteArray()
+            file.writeBytes(bArray)
             binding.imageField.setImageBitmap(bitmap)
-            //binding.imageField.setImageURI(imageUri)
-
+            newProduct.imagen = PhotoPath
         }
     }
 

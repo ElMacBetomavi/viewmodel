@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.practica.ejemplodagger.MainApplication
 import com.practica.ejemplodagger.data.domain.DetailsProductUseCase
 import com.practica.ejemplodagger.data.domain.EditProductUseCase
+import com.practica.ejemplodagger.data.domain.FilterSelectUseCase
 import com.practica.ejemplodagger.data.entities.ProductosEntity
 import com.practica.ejemplodagger.data.repository.ProductRepository
 import com.practica.ejemplodagger.sis.ui.view.alerdialog.DeleteAlertDialog
@@ -20,6 +21,7 @@ class ProductViewModel:ViewModel() {
 
     val repository = ProductRepository()
     var productList = MutableLiveData<MutableList<ProductosEntity>>()
+    val filterTxtList = MutableLiveData<MutableList<String>>()
     @SuppressLint("StaticFieldLeak")
     val context = MainApplication.appContext
 
@@ -44,13 +46,31 @@ class ProductViewModel:ViewModel() {
         }
     }
 
+    fun setFilter(filtro:String){
+        val filterSelectUseCase = FilterSelectUseCase()
+        when (filtro) {
+            "categoria" -> {
+                viewModelScope.launch {
+                    val categorias = filterSelectUseCase.categoriaSelected()
+                    filterTxtList.postValue(categorias)
+                }
+            }
+            "unidades" -> {
+                viewModelScope.launch {
+                    val unidades = filterSelectUseCase.unidadesSelected()
+                    filterTxtList.postValue(unidades)
+                }
+            }
+            else -> filterTxtList.postValue(mutableListOf())
+        }
+    }
+
     /**atiende la seleccion del context menu de cada item del rv*/
     fun itemSelect(item: MenuItem, product: ProductosEntity, fragmentManager: FragmentManager){
         when (item.title) {
-            "Ver imagen" -> {
-
+            "Ver detalles" -> {
                 val detailsProduct= DetailsProductUseCase()
-                detailsProduct.verDetalles(product.imagen!!, fragmentManager, context!!)
+                detailsProduct.detalles(product.categoria!!, fragmentManager)
             }
             "Eliminar" -> {
                 val alert = DeleteProductDialog(product){ deleteCategoria -> deleteProduct(deleteCategoria) }

@@ -31,5 +31,10 @@ class CategoriaRepository {
         withContext(Dispatchers.IO) {
             db.searchCategoria(query)!!
         }
+    suspend fun getCategoryByName(query:String): CategoriaEntity =
+        withContext(Dispatchers.IO) {
+            db.getByName(query)!!
+        }
+
 
 }

@@ -80,5 +80,12 @@ class RegisterCategoryViewModel:ViewModel() {
         }
     }
 
+    fun setValuesWhenDetailsProductClicked(nombre:String){
+        viewModelScope.launch {
+            val currentInitcategoria = repository.getCategoryByName(nombre)
+            initcategoria.postValue(currentInitcategoria)
+        }
+    }
+
 
 }
